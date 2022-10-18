@@ -9,6 +9,12 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    var secuencia = ArrayList<String>() //Secuncia en ronda actual
+    var ronda = 0     //número de ronda
+    var numero = 4    //número de luces encendidas
+    var restante = 0  //número de comprobaciones restantes
+
+
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         // Checks the orientation of the screen
@@ -46,11 +52,12 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    private fun iniciarPartida(){
+
+    private fun iniciarPartida() {
         mostrarSecuencia()
     }
 
-    private fun mostrarSecuencia() {
+    private fun generarSecuencia() {
         val randomInt = (1..4).random()
         when (randomInt) {
             1 -> R.drawable.red_button
@@ -58,6 +65,10 @@ class MainActivity : AppCompatActivity() {
             3 -> R.drawable.red_button
             else -> R.drawable.red_button
         }
+    }
+
+    private fun mostrarSecuencia() {
+
     }
 
     private fun comprobar(color: String) {

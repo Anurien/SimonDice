@@ -8,18 +8,11 @@
         <shape
             android:angle="0"
             android:innerRadiusRatio="7"
-            android:shape="rectangle"
+            android:shape="oval"
             android:thicknessRatio="3.0"
             android:type="sweep"
             android:useLevel="false">
-            <solid android:color="@color/purple_200" />
-            <corners
-                android:bottomLeftRadius="300dp"
-                android:bottomRightRadius="0dp"
-                android:topLeftRadius="0dp"
-                android:topRightRadius="1000dp" />
-            <padding android:bottom="100dp"
-                android:left="190dp"/>
+            <solid android:color="@color/teal_200" />
         </shape>
     </item>
 </layer-list>

@@ -14,10 +14,10 @@
             android:useLevel="false">
             <solid android:color="@color/purple_200" />
             <corners
-                android:bottomLeftRadius="300dp"
+                android:bottomLeftRadius="1000dp"
                 android:bottomRightRadius="0dp"
                 android:topLeftRadius="0dp"
-                android:topRightRadius="1000dp" />
+                android:topRightRadius="300dp" />
             <padding android:bottom="100dp"
                 android:left="190dp"/>
         </shape>
