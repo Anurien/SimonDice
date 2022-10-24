@@ -12,14 +12,12 @@
             android:thicknessRatio="3.0"
             android:type="sweep"
             android:useLevel="false">
-            <solid android:color="@color/purple_200" />
+            <solid android:color="#03A9F4" />
             <corners
                 android:bottomLeftRadius="0dp"
                 android:bottomRightRadius="1000dp"
                 android:topLeftRadius="300dp"
                 android:topRightRadius="0dp" />
-            <padding android:bottom="100dp"
-                android:left="190dp"/>
         </shape>
     </item>
 </layer-list>

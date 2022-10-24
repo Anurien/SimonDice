@@ -12,7 +12,7 @@
             android:thicknessRatio="3.0"
             android:type="sweep"
             android:useLevel="false">
-            <solid android:color="@color/black" />
+            <solid android:color="#FFC107" />
             <corners
                 android:bottomLeftRadius="0dp"
                 android:bottomRightRadius="300dp"

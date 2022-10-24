@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SimonDice</string>
+    <string name="repite_la_secuencia">¡Repite la secuencia!</string>
+    <string name="jugar">Jugar</string>
 </resources>
