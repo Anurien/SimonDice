@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -54,38 +55,108 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun iniciarPartida() {
-        mostrarSecuencia()
+        mostrarSecuencia(numero)
     }
 
     private fun generarSecuencia() {
         val randomInt = (1..4).random()
         when (randomInt) {
             1 -> R.drawable.red_button
-            2 -> R.drawable.red_button
-            3 -> R.drawable.red_button
-            else -> R.drawable.red_button
+            2 -> R.drawable.green_button
+            3 -> R.drawable.blue_button
+            else -> R.drawable.yellow_button
         }
     }
 
-    private fun mostrarSecuencia() {
+    /**
+     * Muesta una secuencia de parpadeos
+     * @numero: número de parpadeos que se van a realizar
+     */
+    private fun mostrarSecuencia(numero: Int) {
 
+        var encendido = 0L
+
+        //deshabilitarBotones()
+
+        for (i in 1..numero) {
+            val random = Random().nextInt(4)
+            encendido += 2500L
+            when (random) {
+                0 -> {
+                    parpadeo(encendido, "azul", numero, i)
+                    secuencia.add("azul")
+                }
+                1 -> {
+                    parpadeo(encendido, "amarillo", numero, i)
+                    secuencia.add("amarillo")
+                }
+                2 -> {
+                    parpadeo(encendido, "verde", numero, i)
+                    secuencia.add("verde")
+                }
+                3 -> {
+                    parpadeo(encendido, "rojo", numero, i)
+                    secuencia.add("rojo")
+                }
+            }
+        }
     }
 
-    private fun comprobar(color: String) {
+    private fun parpadeo(encendido: Long, color: String, maximo: Int, actual: Int) {
         when (color) {
-            "red" -> {
+            "azul" -> {
 
             }
-            "blue" -> {
+            "amarillo" -> {
 
             }
-            "yellow" -> {
+            "verde" -> {
 
             }
-            else -> {
+            "rojo" -> {
 
             }
         }
-
     }
-}
+
+        /**
+         * Comprueba si el usuario, a la hora de pulsar un botón, ha acertado con la siguiente luz de la secuencia.
+         * Realiza una serie de operaciones según haya acertado, haya fallado o no queden comprobaciones restantes.
+         * @color: Botón que pulsó el usuario
+         */
+        private fun comprobar(color: String) {
+            if (secuencia.isEmpty() == true) {
+                ronda = 1
+                numero = 3
+                restante = 0
+                Toast.makeText(this@MainActivity, "Presiona Play para jugar", Toast.LENGTH_SHORT)
+                    .show()
+                secuencia.clear()
+            } else {
+                if (secuencia.get(0).equals(color)) {
+                    secuencia.removeAt(0)
+                    Toast.makeText(this@MainActivity, "Acierto", Toast.LENGTH_SHORT).show()
+                    restante--
+                    if (secuencia.isEmpty() == true) {
+                        numero++
+                        ronda++
+                        runBlocking {
+                            Toast.makeText(this@MainActivity, "Ronda: $ronda", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                        mostrarSecuencia(numero)
+                    }
+                } else {
+                    ronda = 1
+                    numero = 3
+                    restante = 0
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Ohhh...has fallado,vuelve a intentarlo",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    secuencia.clear()
+                }
+            }
+        }
+    }
