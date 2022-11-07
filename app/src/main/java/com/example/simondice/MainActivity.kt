@@ -1,9 +1,11 @@
 package com.example.simondice
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import kotlinx.coroutines.*
@@ -11,10 +13,9 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    var secuencia = ArrayList<String>() //Secuncia en ronda actual
-    var ronda = 0     //número de ronda
+    var secuencia = ArrayList<String>() //Secuencia en ronda actual
+    var ronda = 1     //número de ronda
     var numero = 1    //número de luces encendidas
-    var restante = 0  //número de comprobaciones restantes
     lateinit var bRed: Button;
     lateinit var bYellow: Button;
     lateinit var bBlue: Button;
@@ -54,15 +55,15 @@ class MainActivity : AppCompatActivity() {
         bGreen.setOnClickListener {
             comprobar("verde")
         }
-          binit.setOnClickListener {
-              iniciarPartida()
-          }
+        binit.setOnClickListener {
+            iniciarPartida()
+        }
 
     }
 
-     private fun iniciarPartida() {
-         mostrarSecuencia(numero)
-     }
+    private fun iniciarPartida() {
+        mostrarSecuencia(numero)
+    }
 
     /**
      * Muesta una secuencia de parpadeos
@@ -94,7 +95,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        numero+1
     }
 
     /**
@@ -132,7 +132,6 @@ class MainActivity : AppCompatActivity() {
             if (actual >= maximo) {
                 Toast.makeText(this@MainActivity, "Reproduce la secuencia", Toast.LENGTH_SHORT)
                     .show()
-                restante = numero
 
             }
         }
@@ -143,11 +142,12 @@ class MainActivity : AppCompatActivity() {
      * Realiza una serie de operaciones según haya acertado, haya fallado o no queden comprobaciones restantes.
      * @color: Botón que pulsó el usuario
      */
+    @SuppressLint("SetTextI18n")
     private fun comprobar(color: String) {
         if (secuencia.isEmpty() == true) {
             ronda = 1
-            numero = 3
-            restante = 0
+            numero = 1
+
             Toast.makeText(this@MainActivity, "Presiona Play para jugar", Toast.LENGTH_SHORT)
                 .show()
             secuencia.clear()
@@ -155,7 +155,7 @@ class MainActivity : AppCompatActivity() {
             if (secuencia.get(0).equals(color)) {
                 secuencia.removeAt(0)
                 Toast.makeText(this@MainActivity, "Acierto", Toast.LENGTH_SHORT).show()
-                restante--
+
                 if (secuencia.isEmpty() == true) {
                     numero++
                     ronda++
@@ -163,17 +163,21 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this@MainActivity, "Ronda: $ronda", Toast.LENGTH_SHORT)
                             .show()
                     }
+                    var rond: TextView = findViewById(R.id.ronda)
+                    rond.text = "Ronda: $ronda"
                     mostrarSecuencia(numero)
                 }
             } else {
                 ronda = 1
-                numero = 3
-                restante = 0
+                numero = 1
+
                 Toast.makeText(
                     this@MainActivity,
                     "Ohhh...has fallado,vuelve a intentarlo",
                     Toast.LENGTH_SHORT
                 ).show()
+                var rond: TextView = findViewById(R.id.ronda)
+                rond.text = "Ronda: $ronda"
                 secuencia.clear()
             }
         }
