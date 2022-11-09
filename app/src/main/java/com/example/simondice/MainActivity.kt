@@ -7,20 +7,20 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
 import kotlinx.coroutines.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    var secuencia = ArrayList<String>() //Secuencia en ronda actual
-    var ronda = 1     //número de ronda
-    var numero = 1    //número de luces encendidas
-    lateinit var bRed: Button;
-    lateinit var bYellow: Button;
-    lateinit var bBlue: Button;
-    lateinit var bGreen: Button;
-    lateinit var binit: Button;
+    private var secuencia = ArrayList<String>() //Secuencia en ronda actual
+    private var comprobar = ArrayList<String>() //Secuencia de comprobacion
+    private var ronda = 1     //número de ronda
+    private var numero = 1    //número de luces encendidas
+    private lateinit var bRed: Button
+    private lateinit var bYellow: Button
+    private lateinit var bBlue: Button
+    private lateinit var bGreen: Button
+    private lateinit var binit: Button
 
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
 
         for (i in 1..numero) {
             val random = Random().nextInt(4)
-            encendido += 1000L
+            encendido += 750L
             when (random) {
                 0 -> {
                     parpadeo(encendido, "azul", numero, i)
@@ -95,6 +95,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        comprobar = secuencia
     }
 
     /**
@@ -104,6 +105,7 @@ class MainActivity : AppCompatActivity() {
      * @maximo: número de luces totales que se van a encender
      * @actual: número de luz actual que se va a encender respecto a @maximo de luces que se encienden
      */
+    @OptIn(DelicateCoroutinesApi::class)
     private fun parpadeo(encendido: Long, color: String, maximo: Int, actual: Int) {
         GlobalScope.launch(Dispatchers.Main) {
             delay(encendido)
@@ -144,26 +146,26 @@ class MainActivity : AppCompatActivity() {
      */
     @SuppressLint("SetTextI18n")
     private fun comprobar(color: String) {
-        if (secuencia.isEmpty() == true) {
+        if (comprobar.isEmpty()) {
             ronda = 1
             numero = 1
 
             Toast.makeText(this@MainActivity, "Presiona Play para jugar", Toast.LENGTH_SHORT)
                 .show()
             secuencia.clear()
+            comprobar.clear()
         } else {
-            if (secuencia.get(0).equals(color)) {
-                secuencia.removeAt(0)
+            if (comprobar[0] == color) {
+                comprobar.removeAt(0)
                 Toast.makeText(this@MainActivity, "Acierto", Toast.LENGTH_SHORT).show()
-
-                if (secuencia.isEmpty() == true) {
+                if (comprobar.isEmpty()) {
                     numero++
                     ronda++
                     runBlocking {
                         Toast.makeText(this@MainActivity, "Ronda: $ronda", Toast.LENGTH_SHORT)
                             .show()
                     }
-                    var rond: TextView = findViewById(R.id.ronda)
+                    val rond: TextView = findViewById(R.id.ronda)
                     rond.text = "Ronda: $ronda"
                     mostrarSecuencia(numero)
                 }
@@ -176,9 +178,10 @@ class MainActivity : AppCompatActivity() {
                     "Ohhh...has fallado,vuelve a intentarlo",
                     Toast.LENGTH_SHORT
                 ).show()
-                var rond: TextView = findViewById(R.id.ronda)
+                val rond: TextView = findViewById(R.id.ronda)
                 rond.text = "Ronda: $ronda"
                 secuencia.clear()
+                comprobar.clear()
             }
         }
     }
